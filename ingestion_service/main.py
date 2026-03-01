@@ -1,5 +1,5 @@
 from pathlib import Path
-from connection.kafka import producer
+from shared.connection.kafka import producer
 import json
 import os
 import hashlib
@@ -39,4 +39,4 @@ metadata()
 print('done')
 
 
-
+# python -m ingestion_service.main

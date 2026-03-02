@@ -2,8 +2,7 @@ from pathlib import Path
 from shared.connection.kafka import producer
 import json
 import os
-import hashlib
-import uuid
+
 
 
 
@@ -39,4 +38,4 @@ metadata()
 print('done')
 
 
-# python -m ingestion_service.main
+# python -m metadata_service.main

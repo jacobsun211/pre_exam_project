@@ -12,7 +12,7 @@ services:
     #   MONGO_INITDB_ROOT_PASSWORD: app_pw
     #   MONGO_INITDB_DATABASE: suspicious
     networks:
-      - es
+      - pre-exam
   
   mongo-express:
     image: mongo-express:1.0.2
@@ -25,7 +25,7 @@ services:
     depends_on:
       - mongo
     networks:
-      - es
+      - pre-exam
 
 
 # +--------------------+
@@ -54,7 +54,7 @@ services:
       KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
       KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
     networks:
-      - es
+      - pre-exam
 
 # +--------------------+
 # |      KAFKA UI      |
@@ -70,7 +70,7 @@ services:
     depends_on:
       - kafka
     networks:
-      - es
+      - pre-exam
 
 # +--------------------+
 # |   Elasticsearch    |
@@ -87,7 +87,7 @@ services:
     volumes:
       - esdata:/usr/share/elasticsearch/data
     networks:
-      - es
+      - pre-exam
 
 # +--------------------+
 # |      Kibana        |
@@ -102,7 +102,7 @@ services:
     depends_on:
       - elasticsearch
     networks:
-      - es
+      - pre-exam
 
   # ingestion-service:
   #   build:
@@ -125,31 +125,33 @@ services:
   #   networks:
   #     - es
 
-  # cleaning_consumer:
-  #   build:
-  #     context: .
-  #     dockerfile: cleaning_consumer/Dockerfile
-  #   restart: unless-stopped
-  #   env_file: .env
-  #   environment:
-  #     KAFKA_BOOTSTRAP_SERVERS: kafka:29092
-  #   depends_on:
-  #     - kafka
-  #   networks:
-  #     - es
+  metadata_service:
+    build:
+      context: .
+      dockerfile: metadata_service/Dockerfile
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+    depends_on:
+      - kafka
+    networks:
+      - pre-exam
 
-  # analytics:
-  #   build:
-  #     context: .
-  #     dockerfile: analytics/Dockerfile
-  #   restart: unless-stopped
-  #   env_file: .env
-  #   environment:
-  #     KAFKA_BOOTSTRAP_SERVERS: kafka:29092
-  #   depends_on:
-  #     - kafka
-  #   networks:
-  #     - es
+  db_inserter:
+    build:
+      context: .
+      dockerfile: db_inserter/Dockerfile
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+    depends_on:
+      - kafka
+      - elastic
+      - mongo
+    networks:
+      - pre-exam
 
   # elastic_consumer:
   #   build:
@@ -186,5 +188,5 @@ volumes:
   mongo_data:
 
 networks:
-  es:
+  pre-exam:
     driver: bridge

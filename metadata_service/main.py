@@ -10,14 +10,15 @@ from shared.elastic_logger import Logger
 logger = Logger.get_logger()
 
 
-WRITING_TOPIC = os.getenv("STEP1_WRITING_TOPIC", "step2")
+WRITING_TOPIC = os.getenv("STEP1_WRITING_TOPIC1", "step2")
+
 
 logger.info(f"starting...")
 
 path = Path("podcasts/")
 
 # print(path.stat())
-
+# all stats of the file!, not of the path
 
 def send_to_kafka(record: dict):
     record = json.dumps(record)
@@ -40,7 +41,6 @@ def metadata():
                
 
 metadata()
-print('bruh')
 
 
 # python -m metadata_service.main

@@ -147,21 +147,21 @@ services:
     networks:
       - pre-exam
 
-  # elastic_consumer:
-  #   build:
-  #     context: .
-  #     dockerfile: elastic_consumer/Dockerfile
-  #   restart: unless-stopped
-  #   env_file: .env
-  #   environment:
-  #     KAFKA_BOOTSTRAP_SERVERS: kafka:29092
-  #     ELASTICSEARCH_HOST: http://elasticsearch
-  #     ELASTICSEARCH_PORT: 9200
-  #   depends_on:
-  #     - kafka
-  #     - elasticsearch
-  #   networks:
-  #     - es
+  ttl_service:
+    build:
+      context: .
+      dockerfile: TTL_service/Dockerfile
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+    volumes:
+      - ./podcasts:/app/podcasts
+    depends_on:
+      - kafka
+      - elasticsearch
+    networks:
+      - pre-exam
 
   # streamlit_ui:
   #   build:

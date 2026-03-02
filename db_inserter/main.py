@@ -5,8 +5,9 @@ from db_inserter.send.mongo import insert_to_mongo
 import hashlib
 import json
 import os
+from shared.elastic_logger import Logger
 
-
+logger = Logger.get_logger()
 
 LISTENS_TOPIC = os.getenv("INSERTER_LISTENING_TOPIC", "step2")
 
@@ -36,23 +37,27 @@ def add_id(record):
 
 
 def listener():
-    print('db inserter')
+    logger.info(f"started listening on topic {LISTENS_TOPIC}")
     while True:
         record = consumer.poll(1.0)
         if record is None: continue
-        if record.error(): continue
-
+        if record.error(): 
+            logger.info(record.error())
+            continue
+        
+        logger.info(f"got massage")
         record = json.loads(record.value())
         id = add_id(record) # creating unique id based on the file content
         record["id"] = id
         insert_to_mongo(record) # inserting to mongo if its not already there
+        logger.info(f"sent {record["name"]} to mongo")
         insert_to_elastic(record) # likewise for elastic
+        logger.info(f"sent {record["name"]} to elastic")
         print(record)
         print('noice')
 
 
 
-if __name__ == '__main__':
-    listener()
+listener()
 
 # python -m db_inserter.main

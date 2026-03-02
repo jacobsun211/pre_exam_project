@@ -28,9 +28,7 @@ services:
       - pre-exam
 
 
-# +--------------------+
-# |       KAFKA        |
-# +--------------------+
+
   kafka:
     image: confluentinc/cp-kafka:7.6.1
     restart: unless-stopped
@@ -56,9 +54,7 @@ services:
     networks:
       - pre-exam
 
-# +--------------------+
-# |      KAFKA UI      |
-# +--------------------+
+
   kafka-ui:
     image: provectuslabs/kafka-ui:latest
     restart: unless-stopped
@@ -72,9 +68,6 @@ services:
     networks:
       - pre-exam
 
-# +--------------------+
-# |   Elasticsearch    |
-# +--------------------+
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.12.0
     container_name: elasticsearch
@@ -89,9 +82,6 @@ services:
     networks:
       - pre-exam
 
-# +--------------------+
-# |      Kibana        |
-# +--------------------+
   kibana:
     image: docker.elastic.co/kibana/kibana:8.12.0
     container_name: kibana
@@ -127,12 +117,14 @@ services:
 
   metadata_service:
     build:
-      context: .
+      context: .   # makes the docker file copy the whole project
       dockerfile: metadata_service/Dockerfile
     restart: unless-stopped
     env_file: .env
     environment:
       KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+    volumes:
+      - ./podcasts:/app/podcasts
     depends_on:
       - kafka
     networks:
@@ -146,9 +138,11 @@ services:
     env_file: .env
     environment:
       KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+    volumes:
+      - ./podcasts:/app/podcasts
     depends_on:
       - kafka
-      - elastic
+      - elasticsearch
       - mongo
     networks:
       - pre-exam

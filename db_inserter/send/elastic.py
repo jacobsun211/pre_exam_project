@@ -8,7 +8,7 @@ port = os.getenv("ELASTICSEARCH_PORT", "9200")
 es = Elasticsearch(f"{host}:{port}")
 
 
-index_name = "records_test"
+index_name = "docker_test"
 
 mapping = {
     "properties": {

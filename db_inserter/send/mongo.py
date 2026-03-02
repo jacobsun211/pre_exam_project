@@ -10,7 +10,7 @@ fs = gridfs.GridFS(db)
 
 def insert_to_mongo(record):
     id = record["id"]
-    if db.fs.files.find({"_id": id}) is None: # chaecking if mongo has this record, if it does - insert to mongo
+    if db.fs.files.find_one({"_id": id}) is None: # chaecking if mongo has this record, if it does - insert to mongo
         with open(record["path"], "rb") as audio:
             fs.put(audio,_id=record["id"],filename=record["name"])
             

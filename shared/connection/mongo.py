@@ -7,12 +7,10 @@ class MongoConnection:
         host = os.getenv("MONGO_HOST", "localhost")
         port = int(os.getenv("MONGO_PORT", "27017"))
 
-       
+        connection_string = f"mongodb://{host}:{port}/"
+        self.client = MongoClient(connection_string)
 
-        self.client = MongoClient(
-            host,
-            port
-        )
+        
 
 
 client = MongoConnection().client

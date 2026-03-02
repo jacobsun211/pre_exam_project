@@ -2,14 +2,17 @@ from pathlib import Path
 from shared.connection.kafka import producer
 import json
 import os
-import hashlib
-import uuid
+from shared.elastic_logger import Logger
 
+
+
+
+logger = Logger.get_logger()
 
 
 WRITING_TOPIC = os.getenv("STEP1_WRITING_TOPIC", "step2")
 
-
+logger.info(f"starting...")
 
 path = Path("podcasts/")
 
@@ -30,13 +33,14 @@ def metadata():
                   "path": str(path) + "/" +  audio.name
                   }
         send_to_kafka(record)
+        logger.info(f"sent to kafka")
     
         
     
                
 
 metadata()
-print('done')
+print('bruh')
 
 
-# python -m ingestion_service.main
+# python -m metadata_service.main

@@ -18,6 +18,7 @@ r = sr.Recognizer()
 with sr.AudioFile(video_path) as video:
     audio_text = r.record(video)
     print("Time over, thanks")
+    print(audio_text)
     # recoginze_() method will throw a request
     # error if the API is unreachable,
     # hence using exception handling

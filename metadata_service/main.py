@@ -10,7 +10,7 @@ from shared.elastic_logger import Logger
 logger = Logger.get_logger()
 
 
-WRITING_TOPIC = os.getenv("STEP1_WRITING_TOPIC1", "step2")
+WRITING_TOPIC = os.getenv("STEP1_WRITING_TOPIC", "step2")
 
 
 logger.info(f"starting...")

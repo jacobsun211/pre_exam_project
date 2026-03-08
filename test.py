@@ -61,7 +61,7 @@ query_bool_example = {
         # "should": [  # לא חייב אבל אם יש נחשב יותר
         #     {"range": {"age": {"gt": 30}}}
 
-response = es.search(index=index_name, body={"size":100})
+response = es.search(index=index_name, **query_bool_example)
 records = response['hits']['hits']
 
 
@@ -72,10 +72,11 @@ for record in records:
     text = record["_source"]["text"].lower()
     for phrase in hostile:
         if phrase.lower() in text:
-            score += text.count(phrase.lower()) * 10
+            score += text.count(phrase.lower()) * 2
     for phrase in less_hostile:
         if phrase.lower() in text:
-            score += text.count(phrase.lower()) * 6
+            score += text.count(phrase.lower()) * 1
+    
     record["bds_threat_level"] = "none"
     record["is_bds"] = False
     record["score"] = score

@@ -1,19 +1,15 @@
 from confluent_kafka import Consumer
-# from shared.connection.kafka import producer
-from pathlib import Path
-# from db_inserter.send.elastic import insert_to_elastic
-# from db_inserter.send.mongo import insert_to_mongo
 import os
 from shared.elastic_logger import Logger
-from TTL_service.send_to_elastic import update_elastic
+from STT_service.send_to_elastic import update_elastic
+from STT_service.score_logic import calc_score
 import speech_recognition as sr
 import json
 
 logger = Logger.get_logger()
 
 
-# WRITING_TOPIC = os.getenv("TTL_SERVICE_WRITING_TOPIC1", "step2")
-LISTENS_TOPIC = os.getenv("TTL_SERVICE_LISTENING_TOPIC", "extract_text")
+LISTENS_TOPIC = os.getenv("STT_SERVICE_LISTENING_TOPIC", "extract_text")
 
 SERVER = os.getenv("KAFKA_BOOTSTRAP_SERVERS", "localhost:9092")
 
@@ -35,6 +31,7 @@ r = sr.Recognizer()
 
 def extract_text(record):
     audio = record["path"]
+    logger.info(f"started processing {record["name"]}")
     with sr.AudioFile(audio) as audio:
         text = r.record(audio)
         text = r.recognize_google(text)
@@ -51,6 +48,7 @@ def main():
         
         record = json.loads(record.value())
         record["text"] = extract_text(record)
+        record = calc_score(record)
         update_elastic(record)
 
 main()

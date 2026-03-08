@@ -15,7 +15,8 @@ index_name = os.getenv("ELASTIC_INDEX", "docker_test")
 
 
 def update_elastic(record: dict):
-    es.update(
+    
+    es.update( # OR you could use this if you dont want to update _score directly
         index=index_name,
         id=record["id"],
         body={
@@ -23,5 +24,5 @@ def update_elastic(record: dict):
             "doc_as_upsert": True 
         }
     )
-    logger.info(f'sent to elastic: {record["name"]}')
 
+    logger.info(f'sent to elastic: {record["name"]}')

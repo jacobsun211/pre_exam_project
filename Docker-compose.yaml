@@ -94,26 +94,6 @@ services:
     networks:
       - pre-exam
 
-  # ingestion-service:
-  #   build:
-  #     context: .
-  #     dockerfile: ingestion_service/Dockerfile
-  #   restart: unless-stopped
-  #   env_file: .env
-  #   environment:
-  #     KAFKA_BOOTSTRAP_SERVERS: kafka:29092
-  #     MONGO_HOST: mongo
-  #     TESSERACT_CMD: /usr/bin/tesseract
-  #     IMAGES_PATH: /data/tweet_images
-  #   ports:
-  #     - "8000:8000"
-  #   volumes:
-  #     - ./data/messaging_images/tweet_images:/data/tweet_images:ro
-  #   depends_on:
-  #     - kafka
-  #     - mongo
-  #   networks:
-  #     - es
 
   metadata_service:
     build:
@@ -147,10 +127,10 @@ services:
     networks:
       - pre-exam
 
-  ttl_service:
+  stt_service:
     build:
       context: .
-      dockerfile: TTL_service/Dockerfile
+      dockerfile: STT_service/Dockerfile
     restart: unless-stopped
     env_file: .env
     environment:

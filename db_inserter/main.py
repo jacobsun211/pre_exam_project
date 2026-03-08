@@ -11,7 +11,7 @@ from shared.elastic_logger import Logger
 logger = Logger.get_logger()
 
 
-WRITING_TOPIC = os.getenv("INSERTER_WRITING_TOPIC2", "extract_text")
+WRITING_TOPIC = os.getenv("INSERTER_WRITING_TOPIC", "extract_text")
 LISTENS_TOPIC = os.getenv("INSERTER_LISTENING_TOPIC", "step2")
 
 SERVER = os.getenv("KAFKA_BOOTSTRAP_SERVERS", "localhost:9092")

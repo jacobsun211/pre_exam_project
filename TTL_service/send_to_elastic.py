@@ -11,7 +11,7 @@ port = os.getenv("ELASTICSEARCH_PORT", "9200")
 
 es = Elasticsearch(f"{host}:{port}")
 
-index_name = os.getenv("ELASTIC_INDEX", "docker_test2")
+index_name = os.getenv("ELASTIC_INDEX", "docker_test")
 
 
 def update_elastic(record: dict):

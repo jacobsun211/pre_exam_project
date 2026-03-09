@@ -13,7 +13,7 @@ mapping = {
     "properties": {
         "size":         {"type": "integer"},
         "name":         {"type": "keyword"},
-        "time_created": {"type": "integer"},
+        "time_created": {"type": "date"},
         "path":         {"type": "keyword"},
         "id":           {"type": "keyword"}
     }

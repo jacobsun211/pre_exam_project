@@ -29,6 +29,9 @@ consumer.subscribe([LISTENS_TOPIC])
 r = sr.Recognizer()
 
 
+
+
+
 def extract_text(record):
     audio = record["path"]
     logger.info(f"started processing {record["name"]}")

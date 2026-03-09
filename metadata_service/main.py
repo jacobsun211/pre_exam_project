@@ -31,14 +31,14 @@ def metadata():
     for audio in path.iterdir():
         record = {"size": audio.stat().st_size,
                   "name": audio.name,
-                   "time_created": datetime.fromtimestamp(audio.stat().st_ctime).isoformat(),  # ← ISO!
+                  "time_created": datetime.fromtimestamp(audio.stat().st_ctime).isoformat(),  # ← ISO!
                   "path": str(path) + "/" +  audio.name
                   }
         send_to_kafka(record)
         logger.info(f"sent to kafka")
     
         # "time_created": audio.stat().st_ctime,
-    
+        #  "time_created": datetime.fromtimestamp(audio.stat().st_ctime).isoformat(),  # ← ISO!
                
 
 metadata()

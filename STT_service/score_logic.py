@@ -30,13 +30,16 @@ def set_score(record, score):
     record["score"] = score
 
     match score:
-        case score if score >= 55:
-            record["bds_threat_level"] = "medium"
         case score if score >= 75:
+            record["bds_threat_level"] = "high"  
             record["is_bds"] = True
-        case score if score >= 85:
-            record["bds_threat_level"] = "high"
-
+        case score if score >= 65:
+            record["is_bds"] = True
+            record["bds_threat_level"] = "medium"
+        case score if score >= 50:
+            record["bds_threat_level"] = "medium"
+        
+        
     return record
 
 def calc_score(record):
